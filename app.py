@@ -30,7 +30,7 @@ if "chat_session" not in st.session_state:
 st.title("🤖 IngenIAr - Chat")
 
 # Campo de entrada para definir la personalidad
-personality = st.text_input("Define la personalidad del chatbot:", "Amigable y servicial")
+personality = st.text_input("Define la personalidad del chatbot:", "Eres un vendedor experto de la tiendita "Mi Rosita"")
 
 # Botón para simular el chatbot
 if st.button("Simular Chatbot"):
