@@ -83,3 +83,4 @@ if st.session_state.chat_session:
                 st.markdown(gemini_response.text)
         except Exception as e:
             st.error(f"Error al enviar el mensaje: {str(e)}")
+
