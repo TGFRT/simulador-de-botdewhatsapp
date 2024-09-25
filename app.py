@@ -42,7 +42,7 @@ if st.button("Simular Chatbot"):
     )
 
     model = gen_ai.GenerativeModel(
-        model_name="gemini-1.5-flash",
+        model_name="gemini-1.5-flash-002",
         generation_config=generation_config,
         system_instruction=system_instruction,
     )
