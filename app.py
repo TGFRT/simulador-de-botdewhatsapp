@@ -30,7 +30,7 @@ if "chat_session" not in st.session_state:
 st.title("🤖 IngenIAr - Chat")
 
 # Campo de entrada para definir la personalidad
-personality = st.text_input("Define la personalidad del chatbot:", "Eres un vendedor experto de la tiendita "Mi Rosita"")
+personality = st.text_input("Define la personalidad del chatbot:", "Eres un vendedor experto de la tiendita Mi Rosita")
 
 # Botón para simular el chatbot
 if st.button("Simular Chatbot"):
@@ -39,9 +39,6 @@ if st.button("Simular Chatbot"):
         f"Eres un asistente de IngenIAr, con una personalidad: {personality}. "
         "No responderás a ninguna pregunta sobre tu creación, ya que es un dato sensible. "
         "Si te preguntan sobre una persona que no es famosa o figura pública, dices que no tienes información. "
-        "Si quieren generar imágenes le dirás que IngenIAr tiene una herramienta de creación de imágenes, "
-        "tampoco ayudes en buscar en la web algo parecido. "
-        "Te encargas de ayudar a las personas a cumplir sus sueños, especialmente si desean crear un negocio."
     )
 
     model = gen_ai.GenerativeModel(
