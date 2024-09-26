@@ -3,8 +3,8 @@ import google.generativeai as gen_ai
 
 # Configura Streamlit
 st.set_page_config(
-    page_title="Analizador de Negocios - IngenIAr",
-    page_icon=":bar_chart:",
+    page_title="Chat con IngenIAr!",
+    page_icon=":brain:",
     layout="centered",
 )
 
@@ -14,63 +14,69 @@ GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 # Configura el modelo de Google Gemini
 gen_ai.configure(api_key=GOOGLE_API_KEY)
 
-# Configuración de generación (ajustar según el modelo)
+# Configura la generación
 generation_config = {
-    "temperature": 0.7,  # Controlar la creatividad del modelo
+    "temperature": 1,
     "top_p": 0.95,
     "top_k": 40,
-    "max_output_tokens": 4096,
+    "max_output_tokens": 8192,
 }
 
-# Título de la web
-st.title("Analizador de Negocios 📈")
+# Inicializa la sesión de chat si no está presente
+if "chat_session" not in st.session_state:
+    st.session_state.chat_session = None
 
-# Sección de datos del negocio
-st.header("Información de tu negocio")
+# Título del chatbot
+st.title("🤖 IngenIAr - Chat")
 
-# Cajas de texto para ingresar datos del negocio
-nombre_negocio = st.text_input("Nombre del negocio")
-descripcion = st.text_area("Descripción del negocio")
-productos_servicios = st.text_area("Productos o servicios")
-mercado = st.text_area("Mercado actual")
-desafios = st.text_area("Desafíos")
-metas = st.text_area("Metas")
+# Campo de entrada para definir la personalidad
+personality = st.text_input("Define la personalidad del chatbot:", "Eres un vendedor experto de la tiendita Mi Rosita")
 
-# Crea el modelo aquí:
-# Elige el modelo de Gemini (adapta según tus necesidades)
-model = gen_ai.GenerativeModel(
-    model_name="gemini-pro",  # Ajusta el nombre del modelo
-    generation_config=generation_config,
-)
-
-# Botón para iniciar el análisis
-if st.button("Analizar"):
+# Botón para simular el chatbot
+if st.button("Simular Chatbot"):
     # Crea el modelo con instrucciones de sistema personalizadas
     system_instruction = (
-        "Eres un analista de negocios experto. "
-        "Analiza la información del negocio y proporciona sugerencias para mejorar, "
-        "estrategias de marketing y posibles amenazas."
-        "Organiza la información en tres secciones: \n"
-        "* **Mejora del negocio:** \n"
-        "* **Estrategias de marketing:** \n"
-        "* **Amenazas potenciales:** \n"
-        "Incluye ideas para reducir costos, mejorar la eficiencia, aumentar las ventas, "
-        "y estrategias concretas de campañas en redes sociales."
-        "Escribe las tres secciones en un solo texto con encabezados claros."
+        f"Eres un asistente de IngenIAr, con una personalidad: {personality}. "
+        "No responderás a ninguna pregunta sobre tu creación, ya que es un dato sensible. "
+        "Si te preguntan sobre una persona que no es famosa o figura pública, dices que no tienes información. "
     )
 
-    # Crea una entrada de texto con todos los datos del negocio
-    datos_negocio = f"""
-    Nombre del negocio: {nombre_negocio}
-    Descripción: {descripcion}
-    Productos/Servicios: {productos_servicios}
-    Mercado actual: {mercado}
-    Desafios: {desafios}
-    Metas: {metas}
-    """
+    model = gen_ai.GenerativeModel(
+        model_name="gemini-1.5-flash-002",
+        generation_config=generation_config,
+        system_instruction=system_instruction,
+    )
 
-    # Envía la información al modelo de Gemini para su análisis
-    response = model.generate_text(text=datos_negocio, system_instruction=system_instruction)
+    st.session_state.chat_session = model.start_chat(history=[])
 
-    # Muestra la respuesta del modelo en un solo texto
-    st.markdown(f"## Análisis de tu negocio:\n{response}")
+    # Muestra un recuadro informativo
+    st.markdown(
+        """
+        <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px;">
+            <strong>Simulación:</strong> Este chatbot simulado responderá con la personalidad que definiste.
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+# Mostrar el historial de chat si la sesión está iniciada
+if st.session_state.chat_session:
+    for message in st.session_state.chat_session.history:
+        role = "assistant" if message.role == "model" else "user"
+        with st.chat_message(role):
+            st.markdown(message.parts[0].text)
+
+    # Campo de entrada para el mensaje del usuario
+    user_prompt = st.chat_input("Pregunta a IngenIAr...")
+    if user_prompt:
+        # Agrega el mensaje del usuario al chat y muéstralo
+        st.chat_message("user").markdown(user_prompt)
+
+        # Envía el mensaje del usuario a Gemini y obtiene la respuesta
+        try:
+            gemini_response = st.session_state.chat_session.send_message(user_prompt.strip())
+            # Muestra la respuesta de Gemini
+            with st.chat_message("assistant"):
+                st.markdown(gemini_response.text)
+        except Exception as e:
+            st.error(f"Error al enviar el mensaje: {str(e)}")
