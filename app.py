@@ -3,7 +3,7 @@ import google.generativeai as gen_ai
 
 # Configura Streamlit
 st.set_page_config(
-    page_title="Simula el asistente de tu negocio",
+    page_title="IngenIAr",
     page_icon=":brain:",
     layout="centered",
 )
@@ -27,7 +27,7 @@ if "chat_session" not in st.session_state:
     st.session_state.chat_session = None
 
 # Título del chatbot
-st.title("🤖 IngenIAr - Chat")
+st.title("🤖 Simula tu vendedor para tu negocio")
 
 # Campo de entrada para definir la personalidad
 personality = st.text_input("Define la personalidad del chatbot:", "Eres un vendedor experto de la tiendita Mi Rosita")
