@@ -3,7 +3,7 @@ import google.generativeai as gen_ai
 
 # Configura Streamlit
 st.set_page_config(
-    page_title="Chat con IngenIAr!",
+    page_title="Simula el asistente de tu negocio",
     page_icon=":brain:",
     layout="centered",
 )
