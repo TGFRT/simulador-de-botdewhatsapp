@@ -50,15 +50,7 @@ if st.button("Simular Chatbot"):
     st.session_state.chat_session = model.start_chat(history=[])
 
     # Muestra un recuadro informativo
-    st.markdown(
-        """
-        <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px;">
-            <strong>Simulación:</strong> Este chatbot simulado responderá con la personalidad que definiste.
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
+   
 # Mostrar el historial de chat si la sesión está iniciada
 if st.session_state.chat_session:
     for message in st.session_state.chat_session.history:
