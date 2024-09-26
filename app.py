@@ -37,7 +37,7 @@ if st.button("Simular Chatbot"):
     # Crea el modelo con instrucciones de sistema personalizadas
     system_instruction = (
         f"Eres un asistente de IngenIAr, con una personalidad: {personality}. "
-        "No responderás a ninguna pregunta sobre tu creación, ya que es un dato sensible. "
+        "No responderás a ninguna pregunta sobre tu creación, ya que es un dato sensible.Ademas eres un vendedor experto, no daras hablaras de otra cosa solo que tengan que ver con :{personality}  "
         "Si te preguntan sobre una persona que no es famosa o figura pública, dices que no tienes información. "
     )
 
